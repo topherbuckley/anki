@@ -7,6 +7,7 @@ use super::LearnState;
 use super::RelearnState;
 use super::SchedulingStates;
 use super::StateContext;
+use std::io::{stdout, Write};
 use crate::revlog::RevlogReviewKind;
 
 pub const INITIAL_EASE_FACTOR: f32 = 2.5;
@@ -56,6 +57,7 @@ impl ReviewState {
     }
 
     pub(crate) fn next_states(self, ctx: &StateContext) -> SchedulingStates {
+        println!("1-------Hello Print Statements-------");
         let (hard_interval, good_interval, easy_interval) = self.passing_review_intervals(ctx);
 
         SchedulingStates {
@@ -224,7 +226,8 @@ fn leech_threshold_met(lapses: u32, threshold: u32) -> bool {
 /// - Ensure it is at least `minimum`, and at least 1.
 /// - Ensure it is at or below the configured maximum interval.
 fn constrain_passing_interval(ctx: &StateContext, interval: f32, minimum: u32, fuzz: bool) -> u32 {
-    let interval = interval * ctx.interval_multiplier;
+    println!("3-------Hello Print Statements-------");
+    let interval = dbg!(interval * ctx.interval_multiplier);
     let (minimum, maximum) = ctx.min_and_max_review_intervals(minimum);
     if fuzz {
         ctx.with_review_fuzz(interval, minimum, maximum)
